@@ -2,18 +2,18 @@ script:
   path: ./static/scripts
 settings:
   application:
-    domain: localhost:4002
+    domain: localhost:4001
     host: 0.0.0.0
     ishttps: false
     mode: dev
     name: fateAdmin-test
-    port: "4002"
+    port: "4001"
     readtimeout: 1
     writertimeout: 2
   database:
     dbtype: mysql
     host: 127.0.0.1
-    name: root
+    name: fate-admin
     password: 123456
     port: 3306
     username: root

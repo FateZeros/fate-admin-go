@@ -19,7 +19,13 @@ go mod init [projectName]
 cobra-cli init
 ```
 
-打包
+## 项目运行
+
+```bash
+go run main.go server -m [mode] -p [端口]
+```
+
+## 项目打包
 
 ```bash
 go build -o [projectName]

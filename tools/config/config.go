@@ -11,6 +11,9 @@ import (
 )
 
 var cfgApplication *viper.Viper
+var cfgSsl *viper.Viper
+var cfgDatabase *viper.Viper
+var cfgJwt *viper.Viper
 
 // 载入配置文件
 func ConfigSetup(path string) {
@@ -21,18 +24,18 @@ func ConfigSetup(path string) {
 		logger.Fatal(fmt.Sprintf("Read config file fail: %s", err.Error()))
 	}
 
-	//Replace environment variables
+	// Replace environment variables
 	err = viper.ReadConfig(strings.NewReader(os.ExpandEnv(string(content))))
 	if err != nil {
 		logger.Fatal(fmt.Sprintf("Parse config file fail: %s", err.Error()))
 	}
 
 	// 数据库初始化
-	// cfgDatabase = viper.Sub("settings.database")
-	// if cfgDatabase == nil {
-	// 	panic("config not found settings.database")
-	// }
-	// DatabaseConfig = InitDatabase(cfgDatabase)
+	cfgDatabase = viper.Sub("settings.database")
+	if cfgDatabase == nil {
+		panic("config not found settings.database")
+	}
+	DatabaseConfig = InitDatabase(cfgDatabase)
 
 	// 启动参数
 	cfgApplication = viper.Sub("settings.application")
@@ -42,18 +45,18 @@ func ConfigSetup(path string) {
 	ApplicationConfig = InitApplication(cfgApplication)
 
 	// Jwt初始化
-	// cfgJwt = viper.Sub("settings.jwt")
-	// if cfgJwt == nil {
-	// 	panic("config not found settings.jwt")
-	// }
-	// JwtConfig = InitJwt(cfgJwt)
+	cfgJwt = viper.Sub("settings.jwt")
+	if cfgJwt == nil {
+		panic("config not found settings.jwt")
+	}
+	JwtConfig = InitJwt(cfgJwt)
 
 	// ssl 配置
-	// cfgSsl = viper.Sub("settings.ssl")
-	// if cfgSsl == nil {
-	// 	panic("config not found settings.ssl")
-	// }
-	// SslConfig = InitSsl(cfgSsl)
+	cfgSsl = viper.Sub("settings.ssl")
+	if cfgSsl == nil {
+		panic("config not found settings.ssl")
+	}
+	SslConfig = InitSsl(cfgSsl)
 
 	// 日志配置
 	logger.Init()
