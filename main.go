@@ -1,10 +1,9 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
 package main
 
-import "fate-vue-admin/cmd"
+import "fateAdmin/cmd"
 
 func main() {
 	cmd.Execute()
