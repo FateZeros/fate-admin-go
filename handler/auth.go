@@ -53,7 +53,7 @@ func IdentityHandler(c *gin.Context) interface{} {
 // Reply will be of the form {"token": "TOKEN"}.
 // @Accept  application/json
 // @Product application/json
-// @Param username body models.Login  true "Add account"
+// @Param username body system.Login  true "Add account"
 // @Success 200 {string} string "{"code": 200, "expire": "2019-08-07T12:45:48+08:00", "token": ".eyJleHAiOjE1NjUxNTMxNDgsImlkIjoiYWRtaW4iLCJvcmlnX2lhdCI6MTU2NTE0OTU0OH0.-zvzHvbg0A" }"
 // @Router /login [post]
 func Authenticator(c *gin.Context) (interface{}, error) {
@@ -80,6 +80,8 @@ func Authenticator(c *gin.Context) (interface{}, error) {
 	loginLog.Os = ua.OS()
 	loginLog.Msg = "登录成功"
 	loginLog.Platform = ua.Platform()
+
+	fmt.Printf("loginVal: %v\n", loginVal)
 
 	// 获取前端过来的数据
 	if err := c.ShouldBind(&loginVal); err != nil {

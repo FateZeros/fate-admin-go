@@ -10,6 +10,7 @@ golang、cobra
   - [ ] 岗位权限
   - [ ] 角色权限
 - [x] ldap 统一认证
+- [x] 集成 swagger api 文档
 
 ## 参考
 

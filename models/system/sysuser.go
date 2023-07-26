@@ -1,5 +1,12 @@
 package system
 
+import (
+	"errors"
+	"fateAdmin/global/orm"
+
+	"golang.org/x/crypto/bcrypt"
+)
+
 type SysUserId struct {
 	UserId int `gorm:"primary_key;AUTO_INCREMENT"  json:"userId"` // 编码
 }
@@ -40,4 +47,45 @@ type SysUser struct {
 	SysUserId
 	SysUserB
 	LoginM
+}
+
+func (SysUser) TableName() string {
+	return "sys_user"
+}
+
+// 加密
+func (e *SysUser) Encrypt() (err error) {
+	if e.Password == "" {
+		return
+	}
+
+	var hash []byte
+	if hash, err = bcrypt.GenerateFromPassword([]byte(e.Password), bcrypt.DefaultCost); err != nil {
+		return
+	} else {
+		e.Password = string(hash)
+		return
+	}
+}
+
+// 新增用户
+func (e SysUser) Insert() (id int, err error) {
+	if err = e.Encrypt(); err != nil {
+		return
+	}
+
+	// check 用户名
+	var count int
+	orm.Eloquent.Table(e.TableName()).Where("username = ? and `delete_time` IS NULL", e.Username).Count(&count)
+	if count > 0 {
+		err = errors.New("账户已存在！")
+		return
+	}
+
+	//添加数据
+	if err = orm.Eloquent.Table(e.TableName()).Create(&e).Error; err != nil {
+		return
+	}
+	id = e.UserId
+	return
 }

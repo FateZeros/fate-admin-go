@@ -1,0 +1,114 @@
+definitions:
+  system.Login:
+    properties:
+      code:
+        type: string
+      loginType:
+        type: integer
+      password:
+        type: string
+      username:
+        type: string
+      uuid:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  system.SysUser:
+    properties:
+      avatar:
+        description: 头像
+        type: string
+      create_time:
+        type: string
+      createBy:
+        type: string
+      deptId:
+        description: 部门编码
+        type: integer
+      email:
+        description: 邮箱
+        type: string
+      nickName:
+        description: 昵称
+        type: string
+      params:
+        type: string
+      password:
+        description: 密码
+        type: string
+      phone:
+        description: 手机号
+        type: string
+      postId:
+        description: 职位编码
+        type: integer
+      remark:
+        description: 备注
+        type: string
+      roleId:
+        description: 角色编码
+        type: integer
+      salt:
+        description: 盐
+        type: string
+      sex:
+        description: 性别
+        type: string
+      status:
+        type: string
+      update_time:
+        type: string
+      updateBy:
+        type: string
+      userId:
+        description: 编码
+        type: integer
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/sysUser:
+    post:
+      consumes:
+      - application/json
+      description: 获取JSON
+      parameters:
+      - description: 用户数据
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/system.SysUser'
+      responses:
+        "200":
+          description: '{"code": -1, "message": "添加失败"}'
+          schema:
+            type: string
+      summary: 创建用户
+      tags:
+      - 用户
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 获取token
+      parameters:
+      - description: Add account
+        in: body
+        name: username
+        required: true
+        schema:
+          $ref: '#/definitions/system.Login'
+      responses:
+        "200":
+          description: '{"code": 200, "expire": "2019-08-07T12:45:48+08:00", "token":
+            ".eyJleHAiOjE1NjUxNTMxNDgsImlkIjoiYWRtaW4iLCJvcmlnX2lhdCI6MTU2NTE0OTU0OH0.-zvzHvbg0A"
+            }'
+          schema:
+            type: string
+      summary: 登陆
+swagger: "2.0"
