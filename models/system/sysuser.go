@@ -49,6 +49,13 @@ type SysUser struct {
 	LoginM
 }
 
+type SysUserView struct {
+	SysUserId
+	SysUserB
+	LoginM
+	RoleName string `gorm:"column:role_name"  json:"role_name"`
+}
+
 func (SysUser) TableName() string {
 	return "sys_user"
 }
@@ -82,10 +89,43 @@ func (e SysUser) Insert() (id int, err error) {
 		return
 	}
 
-	//添加数据
+	// 添加数据
 	if err = orm.Eloquent.Table(e.TableName()).Create(&e).Error; err != nil {
 		return
 	}
 	id = e.UserId
+	return
+}
+
+// 获取用户数据
+func (e *SysUser) Get() (SysUserView SysUserView, err error) {
+	table := orm.Eloquent.Table(e.TableName()).Select([]string{"sys_user.*", "sys_role.role_name"})
+	table = table.Joins("left join sys_role on sys_user.role_id = sys_role.role_id")
+
+	if e.UserId != 0 {
+		table = table.Where("user_id = ?", e.UserId)
+	}
+
+	if e.Username != "" {
+		table = table.Where("username = ?", e.Username)
+	}
+
+	if e.Password != "" {
+		table = table.Where("password = ?", e.Password)
+	}
+
+	if e.RoleId != 0 {
+		table = table.Where("role_id = ?", e.RoleId)
+	}
+
+	if e.DeptId != 0 {
+		table = table.Where("dept_id = ?", e.DeptId)
+	}
+
+	if err = table.First(&SysUserView).Error; err != nil {
+		return
+	}
+
+	SysUserView.Password = ""
 	return
 }

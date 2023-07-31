@@ -14,7 +14,6 @@ type Login struct {
 }
 
 func (u *Login) GetUser() (user SysUser, role SysRole, e error) {
-
 	e = orm.Eloquent.Table("sys_user").Where("username = ? ", u.Username).Find(&user).Error
 	if e != nil {
 		return

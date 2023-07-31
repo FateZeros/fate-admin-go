@@ -1,5 +1,7 @@
 package system
 
+import "fateAdmin/global/orm"
+
 type SysRole struct {
 	RoleId   int    `json:"roleId" gorm:"primary_key;AUTO_INCREMENT"` // 角色编码
 	RoleName string `json:"roleName" gorm:"type:varchar(128);"`       // 角色名称
@@ -15,4 +17,19 @@ type SysRole struct {
 	MenuIds  []int  `json:"menuIds" gorm:"-"`
 	DeptIds  []int  `json:"deptIds" gorm:"-"`
 	BaseModel
+}
+
+func (role *SysRole) GetList() (SysRole []SysRole, err error) {
+	table := orm.Eloquent.Table("sys_role")
+	if role.RoleId != 0 {
+		table = table.Where("role_id = ?", role.RoleId)
+	}
+	if role.RoleName != "" {
+		table = table.Where("role_name = ?", role.RoleName)
+	}
+	if err = table.Order("role_sort").Find(&SysRole).Error; err != nil {
+		return
+	}
+
+	return
 }

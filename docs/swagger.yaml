@@ -1,4 +1,16 @@
 definitions:
+  app.Response:
+    properties:
+      code:
+        description: 代码
+        example: 200
+        type: integer
+      data:
+        description: 数据集
+      msg:
+        description: 消息
+        type: string
+    type: object
   system.Login:
     properties:
       code:
@@ -71,6 +83,26 @@ definitions:
 info:
   contact: {}
 paths:
+  /api/v1/register:
+    post:
+      consumes:
+      - application/json
+      description: 获取JSON
+      parameters:
+      - description: 用户数据
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/system.SysUser'
+      responses:
+        "200":
+          description: '{"code": -1, "message": "注册失败"}'
+          schema:
+            type: string
+      summary: 注册用户
+      tags:
+      - 用户
   /api/v1/sysUser:
     post:
       consumes:
@@ -89,6 +121,25 @@ paths:
           schema:
             type: string
       summary: 创建用户
+      tags:
+      - 用户
+  /api/v1/sysUser/{userId}:
+    get:
+      description: 获取JSON
+      parameters:
+      - description: 用户编码
+        in: path
+        name: userId
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - Bearer: []
+      summary: 获取用户
       tags:
       - 用户
   /login:

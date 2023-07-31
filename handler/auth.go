@@ -81,8 +81,6 @@ func Authenticator(c *gin.Context) (interface{}, error) {
 	loginLog.Msg = "登录成功"
 	loginLog.Platform = ua.Platform()
 
-	fmt.Printf("loginVal: %v\n", loginVal)
-
 	// 获取前端过来的数据
 	if err := c.ShouldBind(&loginVal); err != nil {
 		loginLog.Status = "1"
