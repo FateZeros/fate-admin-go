@@ -14,7 +14,7 @@ func SysBaseRouter(r *gin.RouterGroup) {
 }
 
 func SysNoCheckRoleRouter(r *gin.RouterGroup) {
-	v1 := r.Group("/api/v1")
+	v1 := r.Group("/v1")
 
 	// 获取验证码
 	v1.GET("/getCaptcha", system.GenerateCaptchaHandler)

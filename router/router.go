@@ -39,7 +39,7 @@ func sysCheckRoleRouterInit(r *gin.RouterGroup, authMiddleware *jwtauth.GinJWTMi
 	// Refresh time can be longer than token timeout
 	r.GET("/refresh_token", authMiddleware.RefreshHandler)
 
-	v1 := r.Group("/api/v1")
+	v1 := r.Group("/v1")
 
 	systemRouter.RegisterSysUserRouter(v1, authMiddleware)
 }
